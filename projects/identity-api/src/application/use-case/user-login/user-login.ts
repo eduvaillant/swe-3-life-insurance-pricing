@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { FindUserByUsernameRepository } from '@application/contract';
 import { TokenService } from '@domain/service';
+import { InvalidUsernameOrPasswordError } from '@application/error';
 
 @Injectable()
 export class UserLogin {
@@ -13,7 +14,7 @@ export class UserLogin {
   async execute({ username, password }: Input): Promise<Output> {
     const user = await this.userRepository.findByUsername(username);
     if (!user || user.password !== password)
-      throw new Error('Username or Password are invalid!');
+      throw new InvalidUsernameOrPasswordError();
     const token = TokenService.generate(user);
     return {
       user: {

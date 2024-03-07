@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { User } from './user';
+import { InvalidPasswordError } from '@domain/error';
 
 describe('User', () => {
   it('should create a new user', () => {
@@ -32,9 +33,8 @@ describe('User', () => {
       invalidPassword: 'Password',
     },
   ])('should throw if password is invalid ($text)', ({ invalidPassword }) => {
-    const expectedError = new Error('Invalid Password');
     expect(() => User.create('aUsername', invalidPassword)).toThrow(
-      expectedError,
+      InvalidPasswordError,
     );
   });
 });

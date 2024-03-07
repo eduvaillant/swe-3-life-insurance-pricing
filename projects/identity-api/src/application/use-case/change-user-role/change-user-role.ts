@@ -4,6 +4,7 @@ import {
   FindUserByIdRepository,
   UpdateUserRepository,
 } from '@application/contract';
+import { UserNotFoundError } from '@application/error';
 
 @Injectable()
 export class ChangeUserRole {
@@ -14,7 +15,7 @@ export class ChangeUserRole {
 
   async execute({ userId, role }: Input): Promise<Output> {
     const user = await this.userRepository.findById(userId);
-    if (!user) throw new Error('User not found!');
+    if (!user) throw new UserNotFoundError();
     user.changeRole(role);
     await this.userRepository.update(user);
     return {

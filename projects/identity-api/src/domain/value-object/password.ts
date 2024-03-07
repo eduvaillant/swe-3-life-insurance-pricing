@@ -1,8 +1,10 @@
+import { InvalidPasswordError } from '@domain/error';
+
 export class Password {
   private value: string;
 
   constructor(password: string) {
-    if (!this.isValidPassowrd(password)) throw new Error('Invalid Password');
+    if (!this.isValidPassowrd(password)) throw new InvalidPasswordError();
     this.value = password;
   }
 

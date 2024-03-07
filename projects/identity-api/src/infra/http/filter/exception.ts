@@ -1,9 +1,17 @@
 import {
+  InvalidUsernameOrPasswordError,
+  UserAlreadyExistsError,
+  UserNotFoundError,
+} from '@application/error';
+import { InvalidPasswordError, UserAlreadyHasRoleError } from '@domain/error';
+import {
   ExceptionFilter,
   Catch,
   ArgumentsHost,
   HttpStatus,
-  HttpException,
+  BadRequestException,
+  UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 
@@ -17,46 +25,48 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     let httpStatus: number;
     let message: string;
-    httpStatus =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
-    if (
-      httpStatus === HttpStatus.BAD_REQUEST ||
-      httpStatus === HttpStatus.UNAUTHORIZED ||
-      httpStatus === HttpStatus.FORBIDDEN
-    ) {
+    let code: string;
+    if (exception instanceof BadRequestException) {
+      const rawMessage = exception.getResponse()['message'];
       message =
-        exception instanceof HttpException
-          ? exception.getResponse()['message']
-          : null;
+        rawMessage instanceof Array ? rawMessage.join(', ') : rawMessage;
+      httpStatus = exception.getStatus();
+      code = 'BAD_REQUEST';
+    } else if (exception instanceof UnauthorizedException) {
+      message = exception.getResponse()['message'];
+      httpStatus = exception.getStatus();
+      code = 'UNAUTHORIZED';
+    } else if (exception instanceof ForbiddenException) {
+      message = exception.getResponse()['message'];
+      httpStatus = exception.getStatus();
+      code = 'FORBIDDEN';
+    } else if (exception instanceof InvalidUsernameOrPasswordError) {
+      message = exception['message'];
+      httpStatus = HttpStatus.UNAUTHORIZED;
+      code = 'UNAUTHORIZED';
+    } else if (exception instanceof UserAlreadyExistsError) {
+      httpStatus = HttpStatus.CONFLICT;
+      message = exception['message'];
+      code = 'CONFLICT';
+    } else if (exception instanceof UserNotFoundError) {
+      httpStatus = HttpStatus.NOT_FOUND;
+      message = exception['message'];
+      code = 'NOT_FOUND';
+    } else if (
+      exception instanceof InvalidPasswordError ||
+      exception instanceof UserAlreadyHasRoleError
+    ) {
+      httpStatus = HttpStatus.BAD_REQUEST;
+      message = exception['message'];
+      code = 'BAD_REQUEST';
     } else {
-      switch (exception['message']) {
-        case 'Username already exists on database!':
-          httpStatus = HttpStatus.CONFLICT;
-          message = exception['message'];
-          break;
-        case 'Username or Password are invalid!':
-          httpStatus = HttpStatus.UNAUTHORIZED;
-          message = exception['message'];
-          break;
-        case 'User already has this role!':
-          httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-          message = exception['message'];
-          break;
-        case 'User not found!':
-          httpStatus = HttpStatus.NOT_FOUND;
-          message = exception['message'];
-          break;
-        default:
-          httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-          message = 'Internal Server Error';
-          break;
-      }
+      httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+      message = 'Internal Server Error';
+      code = 'INTERNAL_SERVER_ERROR';
     }
     httpAdapter.reply(
       ctx.getResponse(),
-      { error: { code: httpStatus, message } },
+      { error: { code, message } },
       httpStatus,
     );
   }

@@ -5,6 +5,7 @@ import {
   CreateUserRepository,
   FindUserByUsernameRepository,
 } from '@application/contract';
+import { UserAlreadyExistsError } from '@application/error';
 
 @Injectable()
 export class CreateUser {
@@ -16,7 +17,7 @@ export class CreateUser {
 
   async execute({ username, password }: Input): Promise<Output> {
     const user = await this.userRepository.findByUsername(username);
-    if (user) throw new Error('Username already exists on database!');
+    if (user) throw new UserAlreadyExistsError();
     const createdUser = User.create(username, password);
     await this.userRepository.create(createdUser);
     return {

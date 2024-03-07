@@ -8,6 +8,7 @@ import {
   FindUserByUsernameRepository,
 } from '@application/contract';
 import { User } from '@domain/entity';
+import { UserAlreadyExistsError } from '@application/error';
 
 jest.mock('node:crypto', () => {
   return {
@@ -66,10 +67,11 @@ describe('CreateUser', () => {
       password: 'Pass1234@',
     };
     const fakeUser = User.create(input.username, input.password);
-    const expectedError = new Error('Username already exists on database!');
     mockedUserRepository.findByUsername.mockResolvedValueOnce(fakeUser);
 
-    await expect(createUser.execute(input)).rejects.toThrow(expectedError);
+    await expect(createUser.execute(input)).rejects.toThrow(
+      UserAlreadyExistsError,
+    );
     expect(mockedUserRepository.findByUsername).toHaveBeenCalledTimes(1);
     expect(mockedUserRepository.findByUsername).toHaveBeenCalledWith(
       input.username,

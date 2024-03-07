@@ -5,7 +5,9 @@ import {
   FindUserByIdRepository,
   UpdateUserRepository,
 } from '@application/contract';
+import { UserNotFoundError } from '@application/error';
 import { User } from '@domain/entity';
+import { UserAlreadyHasRoleError } from '@domain/error';
 
 describe('ChangeUserRole', () => {
   let changeUserRole: ChangeUserRole;
@@ -44,23 +46,25 @@ describe('ChangeUserRole', () => {
   });
 
   it('should throw if user was not found', async () => {
-    const expectedError = new Error('User not found!');
     const input = {
       userId: fakeUser.id,
       role: 'admin',
     };
     mockedFindUserByIdRepository.findById.mockResolvedValueOnce(undefined);
 
-    await expect(changeUserRole.execute(input)).rejects.toThrow(expectedError);
+    await expect(changeUserRole.execute(input)).rejects.toThrow(
+      UserNotFoundError,
+    );
   });
 
   it('should throw if user already has the inputed role', async () => {
-    const expectedError = new Error('User already has this role!');
     const input = {
       userId: fakeUser.id,
       role: 'user',
     };
 
-    await expect(changeUserRole.execute(input)).rejects.toThrow(expectedError);
+    await expect(changeUserRole.execute(input)).rejects.toThrow(
+      UserAlreadyHasRoleError,
+    );
   });
 });

@@ -1,6 +1,7 @@
 import * as crypto from 'node:crypto';
 
 import { Password } from '@domain/value-object';
+import { UserAlreadyHasRoleError } from '@domain/error';
 
 export class User {
   private _id: string;
@@ -46,7 +47,7 @@ export class User {
   }
 
   changeRole(role: string): void {
-    if (this._role === role) throw new Error('User already has this role!');
+    if (this._role === role) throw new UserAlreadyHasRoleError();
     this._role = role;
     this._updatedAt = new Date();
   }

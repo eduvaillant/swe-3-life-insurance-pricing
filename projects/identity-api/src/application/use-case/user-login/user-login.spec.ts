@@ -5,6 +5,7 @@ import { UserLogin } from './user-login';
 import { FindUserByUsernameRepository } from '@application/contract';
 import { User } from '@domain/entity';
 import { TokenService } from '@domain/service';
+import { InvalidUsernameOrPasswordError } from '@application/error';
 
 describe('UserLogin', () => {
   let userLogin: UserLogin;
@@ -55,7 +56,6 @@ describe('UserLogin', () => {
   });
 
   it('should throw if there is no user for specified username', async () => {
-    const expectedError = new Error('Username or Password are invalid!');
     const input = {
       username: 'aUsername',
       password: 'Pass1234@',
@@ -64,16 +64,19 @@ describe('UserLogin', () => {
       undefined,
     );
 
-    await expect(userLogin.execute(input)).rejects.toThrow(expectedError);
+    await expect(userLogin.execute(input)).rejects.toThrow(
+      InvalidUsernameOrPasswordError,
+    );
   });
 
   it('should throw if inputed password is incorrect', async () => {
-    const expectedError = new Error('Username or Password are invalid!');
     const input = {
       username: 'aUsername',
       password: 'Pass1234',
     };
 
-    await expect(userLogin.execute(input)).rejects.toThrow(expectedError);
+    await expect(userLogin.execute(input)).rejects.toThrow(
+      InvalidUsernameOrPasswordError,
+    );
   });
 });
