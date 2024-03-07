@@ -1,0 +1,99 @@
+version: "3.9"
+services:
+  identity-api:
+    container_name: identity-api
+    build: ./projects/identity-api
+    env_file: ./projects/identity-api/.env
+    depends_on:
+      - identity-db
+    ports:
+      - "3030:3030"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: "0.6GB"
+
+  identity-db:
+    container_name: identity-db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5433:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.55"
+          memory: "1.5GB"
+
+  identity-db-migrations-and-seeds:
+    container_name: identity-db-migrations-and-seeds
+    image: node:20
+    working_dir: /usr/src/app
+    command: 'bash -c "npm install && npm run migrate:dev && npx prisma generate && npm run seed:dev"'
+    volumes:
+      - ./projects/identity-api:/usr/src/app
+    depends_on:
+      - identity-db
+
+  pricing-api:
+    build: ./projects/pricing-api
+    env_file: ./projects/pricing-api/.env
+    depends_on:
+      - pricing-db-migrations-and-seeds
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: "0.6GB"
+    volumes:
+      - ./seed/ages.json:/usr/src/app/ages.json
+
+  pricing-db-migrations-and-seeds:
+    container_name: pricing-db-migrations-and-seeds
+    image: node:20
+    working_dir: /usr/src/app
+    command: 'bash -c "npm install && npm run migrate:dev && npx prisma generate && npm run seed:dev"'
+    volumes:
+      - ./projects/pricing-api:/usr/src/app
+      - ./seed/occupations.csv:/usr/src/app/occupations.csv
+    depends_on:
+      - pricing-db
+
+  pricing-db:
+    container_name: pricing-db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.55"
+          memory: "1.5GB"
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - pricing-api
+    ports:
+      - "3000:3000"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.15"
+          memory: "0.3GB"
+
+volumes:
+  db:
+    driver: local
