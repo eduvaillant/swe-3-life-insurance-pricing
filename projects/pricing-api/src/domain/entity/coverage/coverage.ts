@@ -30,6 +30,8 @@ export class Coverage {
     this._name = name;
     this._description = description;
     this._capital = new Capital(capital);
+    if (!PremiumValidator.isValid(premium, capital))
+      throw new InvalidPremiumError();
     this._premium = premium;
     this._active = active;
     this._createdAt = createdAt;
@@ -43,8 +45,6 @@ export class Coverage {
     capital: number,
     premium: number,
   ) {
-    if (!PremiumValidator.isValid(premium, capital))
-      throw new InvalidPremiumError();
     const id = crypto.randomUUID();
     const createdAt = new Date();
     const updatedAt = new Date();
@@ -132,9 +132,9 @@ export class Coverage {
   }
 
   changeCapital(capital: number): void {
+    this._capital = new Capital(capital);
     if (!PremiumValidator.isValid(this._premium, capital))
       throw new InvalidPremiumError();
-    this._capital = new Capital(capital);
     this.update();
   }
 
