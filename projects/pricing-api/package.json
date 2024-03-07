@@ -74,6 +74,14 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "index.ts",
+      "main.ts",
+      "app.module.ts",
+      "seed.ts",
+      "prisma.ts"
+    ],
     "moduleNameMapper": {
       "^@application(.*)$": "<rootDir>/application/$1",
       "^@domain(.*)$": "<rootDir>/domain/$1",

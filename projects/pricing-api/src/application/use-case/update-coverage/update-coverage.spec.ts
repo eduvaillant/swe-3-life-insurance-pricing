@@ -13,6 +13,7 @@ import {
   CoverageAlreadyExistsError,
   CoverageNotFoundError,
 } from '@application/error';
+import { InvalidCapitalError, InvalidPremiumError } from '@domain/error';
 
 jest.mock('node:crypto', () => {
   return {
@@ -177,21 +178,72 @@ describe('UpdateCoverage', () => {
     expect(mockedCoverageRepository.update).not.toHaveBeenCalled();
   });
 
+  it('should throw if premium is invalid', async () => {
+    const input = {
+      coverageId: fakeCoverageId,
+      premium: 30000,
+    };
+    const fakeCoverage = Coverage.create(
+      faker.lorem.sentence(),
+      faker.lorem.paragraph(2),
+      10000,
+      2000,
+    );
+    mockedCoverageRepository.findById.mockResolvedValueOnce(fakeCoverage);
+
+    await expect(updateCoverage.execute(input)).rejects.toThrow(
+      InvalidPremiumError,
+    );
+  });
+
+  it('should throw if premium is invalid when changing capital', async () => {
+    const input = {
+      coverageId: fakeCoverageId,
+      capital: 1000,
+    };
+    const fakeCoverage = Coverage.create(
+      faker.lorem.sentence(),
+      faker.lorem.paragraph(2),
+      10000,
+      2000,
+    );
+    mockedCoverageRepository.findById.mockResolvedValueOnce(fakeCoverage);
+
+    await expect(updateCoverage.execute(input)).rejects.toThrow(
+      InvalidPremiumError,
+    );
+  });
+
+  it('should throw if capital is invalid', async () => {
+    const input = {
+      coverageId: fakeCoverageId,
+      capital: 100,
+    };
+    const fakeCoverage = Coverage.create(
+      faker.lorem.sentence(),
+      faker.lorem.paragraph(2),
+      10000,
+      2000,
+    );
+    mockedCoverageRepository.findById.mockResolvedValueOnce(fakeCoverage);
+
+    await expect(updateCoverage.execute(input)).rejects.toThrow(
+      InvalidCapitalError,
+    );
+  });
+
   it('should throw if UpdateCoverageRepository throws', async () => {
     const expectedError = new Error('update-error');
     mockedCoverageRepository.update.mockRejectedValueOnce(expectedError);
     const input = {
       coverageId: fakeCoverageId,
-      name: faker.lorem.sentence(),
-      description: faker.lorem.paragraph(2),
-      capital: 1000,
       premium: 200,
     };
     const fakeCoverage = Coverage.create(
-      input.name,
-      input.description,
-      input.capital,
-      input.premium,
+      faker.lorem.sentence(),
+      faker.lorem.paragraph(2),
+      10000,
+      2000,
     );
     mockedCoverageRepository.findById.mockResolvedValueOnce(fakeCoverage);
 

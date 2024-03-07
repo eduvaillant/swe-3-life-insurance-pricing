@@ -48,7 +48,7 @@ export class UpdateCoverageInputDto {
   premium: number;
 
   @Validate(AtLeastOneFieldPresentValidator)
-  atLeastOneFieldPresent: any;
+  atLeastOneFieldPresent?: any;
 }
 
 export class UpdateCoverageParamsInputDto {
