@@ -5,10 +5,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import * as jwt from 'jsonwebtoken';
 import { Request } from 'express';
 
 import { IS_PUBLIC_KEY } from '@infra/http/decorator';
+import { TokenService } from '@domain/service';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
@@ -24,7 +24,7 @@ export class AuthenticationGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
     if (!token) throw new UnauthorizedException();
     try {
-      request['user'] = jwt.verify(token, process.env.JWT_PUBLIC_KEY);
+      request['user'] = TokenService.verify(token);
     } catch {
       throw new UnauthorizedException();
     }

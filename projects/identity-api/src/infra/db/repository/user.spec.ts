@@ -84,6 +84,32 @@ describe('PostgresUserRepository', () => {
     });
   });
 
+  describe('findByUsername()', () => {
+    it('should return a User on success', async () => {
+      const username = fakeUser.username;
+      const expectedInput = { where: { username } };
+      mockedPrismaService.user.findUnique.mockResolvedValue(fakeUser);
+
+      const actualUser = await postgresUserRepository.findByUsername(username);
+
+      expect(mockedPrismaService.user.findUnique).toHaveBeenCalledTimes(1);
+      expect(mockedPrismaService.user.findUnique).toHaveBeenCalledWith(
+        expectedInput,
+      );
+      expect(actualUser).toEqual(fakeUser);
+    });
+
+    it('should throw if PrismaService throws', async () => {
+      const username = fakeUser.username;
+      const expectedError = new Error('find-error');
+      mockedPrismaService.user.findUnique.mockRejectedValueOnce(expectedError);
+
+      await expect(postgresUserRepository.findById(username)).rejects.toThrow(
+        expectedError,
+      );
+    });
+  });
+
   describe('update()', () => {
     it('should update a user', async () => {
       const expectedInput = {

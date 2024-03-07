@@ -13,4 +13,8 @@ export class TokenService {
       algorithm: 'RS256',
     });
   }
+
+  static verify(token: string): any {
+    return jwt.verify(token, process.env.JWT_PUBLIC_KEY);
+  }
 }
