@@ -8,14 +8,14 @@ Para isso será necessário desenvolver um cadastro e manutenção das cobertura
 
 A cada cobertura deve ter um nome e descrição, além de um id único gerado pelo sistema, e os campos capital e premium.
 
-Para este case e a forma que a cobertura será utilizada na precificação, o valor do capital deve ser um múltiplo de 10 maior ou igual a 1000. 
+Para este case e a forma que a cobertura será utilizada na precificação, o valor do capital deve ser um múltiplo de 10 maior ou igual a 1000.
 
 O premio deve ser um valor maior que 0 e menor do que 30% o valor do capital,
 
 O nome deve ser único no cadastro.
 
-
 Exemplo de coberturas:
+
 ```
 Invalidez Funcional Permanente Total por Doença
 
@@ -28,10 +28,10 @@ Indenização Especial por Morte Acidental
 Essa cobertura garante um pagamento adicional, de mesmo valor, da indenização do seguro por Morte. Ou seja, o(s) beneficiário(s) da indenização receberá(ão) o dobro do capital segurado em caso de morte especifica por acidente.
 ```
 
-
 **POST** `/coverage`
 
 Request Payload
+
 ```json
 {
     "name": <string>,
@@ -41,7 +41,8 @@ Request Payload
 }
 ```
 
-Response Payload - HTTP STATUS `???`
+Response Payload - HTTP STATUS 201
+
 ```json
 {
     "data": {
@@ -54,7 +55,52 @@ Response Payload - HTTP STATUS `???`
 }
 ```
 
-Error Response - HTTP STATUS `???` (especificar para cada erro tratado)
+Error Response - HTTP STATUS 400
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 401
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 403
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 409
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 500
+
 ```json
 {
     "error": {

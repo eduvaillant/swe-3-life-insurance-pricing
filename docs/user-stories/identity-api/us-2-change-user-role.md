@@ -7,13 +7,15 @@ O Admin deve alterar a role de um usuário. As roles permitidas são `user` ou `
 **PATCH** `/users/:userId`
 
 Request Payload
+
 ```json
 {
     "role": <string>
 }
 ```
 
-Response Payload - HTTP STATUS `???`
+Response Payload - HTTP STATUS 200
+
 ```json
 {
     "data": {
@@ -24,7 +26,41 @@ Response Payload - HTTP STATUS `???`
 }
 ```
 
-Error Response - HTTP STATUS `???` (especificar para cada erro tratado)
+Error Response - HTTP STATUS 400
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 401
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 403
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 500
+
 ```json
 {
     "error": {

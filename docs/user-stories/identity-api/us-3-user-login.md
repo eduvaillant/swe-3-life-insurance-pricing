@@ -2,11 +2,12 @@
 
 ## US-3 - Eu, como User, posso efetuar um login com a senha fornecida pelo Admin, para gerar um JWT token e consumir a api de precificação.
 
-O usuário deve poder efetuar o login no sistema fornecendo o usuário e senha, e deve receber de volta um token JWT assinado que será utilizado para o consumo das APIs. 
+O usuário deve poder efetuar o login no sistema fornecendo o usuário e senha, e deve receber de volta um token JWT assinado que será utilizado para o consumo das APIs.
 
 O token deve ser gerando no formato de JWT assinado, utilizando uma chave assimétrica.
 
 Lembre-se de fazer o tratamento correto dos error, como por exemplo (mas não somente):
+
 - payload inválido
 - senha incorreta
 
@@ -15,6 +16,7 @@ Para manter a privacidade e segurança, a falha na autenticação (dado um paylo
 **POST** `/auth`
 
 Request Payload
+
 ```json
 {
     "username": <string>,
@@ -22,7 +24,8 @@ Request Payload
 }
 ```
 
-Response Payload - HTTP STATUS `???`
+Response Payload - HTTP STATUS 200
+
 ```json
 {
     "data": {
@@ -36,7 +39,30 @@ Response Payload - HTTP STATUS `???`
 }
 ```
 
-Error Response - HTTP STATUS `???` (especificar para cada erro tratado)
+Error Response - HTTP STATUS 400
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 401
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 500
+
 ```json
 {
     "error": {

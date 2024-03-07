@@ -9,17 +9,19 @@ O sistema deve gerar um id único para o usuário.
 Não deve ser permitido o cadastro de `username` já existentes, também não se deve permitir uma `username` ou `password` vazios, ou seja, strings vazias ou contendo somente espaços.
 
 O sistema deve garantir uma senha forte, que nesse caso devem seguir as seguintes regras:
+
 - Conter no mínimo 8 caracteres
 - Conter no máximo 64 caracteres
 - Conter letras maiúsculas e minúsculas
 - Conter números
 - Conter pelo menos um dos seguintes símbolos @#!$%, outros símbolos não devem ser permitidos
 
-*Dica: utilize Regex para validar a senha*
+_Dica: utilize Regex para validar a senha_
 
 **POST** `/users`
 
 Request Payload
+
 ```json
 {
     "username": <string>,
@@ -28,6 +30,7 @@ Request Payload
 ```
 
 Response Payload - HTTP STATUS 201
+
 ```json
 {
     "data": {
@@ -38,7 +41,52 @@ Response Payload - HTTP STATUS 201
 }
 ```
 
-Error Response - HTTP STATUS `???` (especificar para cada erro tratado)
+Error Response - HTTP STATUS 400
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 401
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 403
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 409
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 500
+
 ```json
 {
     "error": {

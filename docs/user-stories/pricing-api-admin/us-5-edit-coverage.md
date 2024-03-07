@@ -8,14 +8,16 @@ Os campos podem ser atualizados todos ou parcialmente, nesse caso, se o endpoint
 
 Ao editar um item que foi deletado [US-6](./us-6-remove-coverage.md), este deve ser "ativado" novamente, sobrescrevendo o soft delete.
 
-**???** `/coverage/:coverageId`
+**PATCH** `/coverage/:coverageId`
 
 Request Payload
+
 ```json
 ???
 ```
 
-Response Payload - HTTP STATUS `???`
+Response Payload - HTTP STATUS 200
+
 ```json
 {
     "data": {
@@ -28,7 +30,79 @@ Response Payload - HTTP STATUS `???`
 }
 ```
 
-Error Response - HTTP STATUS `???` (especificar para cada erro tratado)
+Error Response - HTTP STATUS 400
+
 ```json
-???
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 401
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 403
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 404
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 409
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 422
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Error Response - HTTP STATUS 500
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
 ```
