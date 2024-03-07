@@ -1,9 +1,9 @@
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 import { Password } from './password';
 import { InvalidPasswordError } from '@domain/error';
 
-jest.mock('bcrypt', () => ({
+jest.mock('bcryptjs', () => ({
   hashSync: jest.fn((password: string) => password),
   compareSync: jest.fn(
     (password: string, hashedPassword: string) => password === hashedPassword,

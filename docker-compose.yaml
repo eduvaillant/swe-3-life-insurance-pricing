@@ -5,7 +5,7 @@ services:
     build: ./projects/identity-api
     env_file: ./projects/identity-api/.env
     depends_on:
-      - identity-db
+      - identity-db-migrations-and-seeds
     ports:
       - "3030:3030"
     deploy:
@@ -36,6 +36,7 @@ services:
     command: 'bash -c "npm install && npm run migrate:dev && npx prisma generate && npm run seed:dev"'
     volumes:
       - ./projects/identity-api:/usr/src/app
+      - /usr/src/app/identity-api/node_modules/
     depends_on:
       - identity-db
 

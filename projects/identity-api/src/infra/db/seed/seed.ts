@@ -1,4 +1,5 @@
 import * as crypto from 'node:crypto';
+import * as bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -11,7 +12,7 @@ async function main() {
         id: crypto.randomUUID(),
         username: 'normalUser',
         role: 'user',
-        password: 'Pass1234@',
+        password: bcrypt.hashSync('Pass1234@', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -19,7 +20,7 @@ async function main() {
         id: crypto.randomUUID(),
         username: 'adminUser',
         role: 'admin',
-        password: 'Pass1234@',
+        password: bcrypt.hashSync('Pass1234@', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
       },

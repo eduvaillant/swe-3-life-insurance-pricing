@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { InvalidPasswordError } from '@domain/error';
 
 export class Password {
