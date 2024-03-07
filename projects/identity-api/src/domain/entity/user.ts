@@ -14,14 +14,14 @@ export class User {
   private constructor(
     id: string,
     username: string,
-    password: string,
+    password: Password,
     role: string,
     createdAt: Date,
     updatedAt: Date,
   ) {
     this._id = id;
     this._username = username;
-    this._password = new Password(password);
+    this._password = password;
     this._role = role;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
@@ -32,7 +32,8 @@ export class User {
     const createdAt = new Date();
     const updatedAt = new Date();
     const role = 'user';
-    return new User(id, username, password, role, createdAt, updatedAt);
+    const hashedPassword = Password.create(password);
+    return new User(id, username, hashedPassword, role, createdAt, updatedAt);
   }
 
   static restore(
@@ -43,7 +44,8 @@ export class User {
     createdAt: Date,
     updatedAt: Date,
   ) {
-    return new User(id, username, password, role, createdAt, updatedAt);
+    const restoredPassword = Password.restore(password);
+    return new User(id, username, restoredPassword, role, createdAt, updatedAt);
   }
 
   changeRole(role: string): void {
@@ -60,8 +62,8 @@ export class User {
     return this._username;
   }
 
-  get password(): string {
-    return this._password.getValue();
+  get password(): Password {
+    return this._password;
   }
 
   get role(): string {

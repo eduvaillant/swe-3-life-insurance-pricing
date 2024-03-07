@@ -13,7 +13,7 @@ export class UserLogin {
 
   async execute({ username, password }: Input): Promise<Output> {
     const user = await this.userRepository.findByUsername(username);
-    if (!user || user.password !== password)
+    if (!user || !user.password.compare(password))
       throw new InvalidUsernameOrPasswordError();
     const token = TokenService.generate(user);
     return {

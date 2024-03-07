@@ -33,7 +33,7 @@ describe('PostgresUserRepository', () => {
           id: fakeUser.id,
           username: fakeUser.username,
           role: fakeUser.role,
-          password: fakeUser.password,
+          password: fakeUser.password.getValue(),
           createdAt: fakeUser.createdAt,
           updatedAt: fakeUser.updatedAt,
         },
@@ -62,7 +62,14 @@ describe('PostgresUserRepository', () => {
     it('should return a User on success', async () => {
       const id = fakeUser.id;
       const expectedInput = { where: { id } };
-      mockedPrismaService.user.findUnique.mockResolvedValue(fakeUser);
+      mockedPrismaService.user.findUnique.mockResolvedValueOnce({
+        id: fakeUser.id,
+        username: fakeUser.username,
+        password: fakeUser.password.getValue(),
+        role: fakeUser.role,
+        createdAt: fakeUser.createdAt,
+        updatedAt: fakeUser.updatedAt,
+      });
 
       const actualUser = await postgresUserRepository.findById(id);
 
@@ -88,7 +95,14 @@ describe('PostgresUserRepository', () => {
     it('should return a User on success', async () => {
       const username = fakeUser.username;
       const expectedInput = { where: { username } };
-      mockedPrismaService.user.findUnique.mockResolvedValue(fakeUser);
+      mockedPrismaService.user.findUnique.mockResolvedValue({
+        id: fakeUser.id,
+        username: fakeUser.username,
+        password: fakeUser.password.getValue(),
+        role: fakeUser.role,
+        createdAt: fakeUser.createdAt,
+        updatedAt: fakeUser.updatedAt,
+      });
 
       const actualUser = await postgresUserRepository.findByUsername(username);
 
@@ -117,7 +131,7 @@ describe('PostgresUserRepository', () => {
         data: {
           username: fakeUser.username,
           role: fakeUser.role,
-          password: fakeUser.password,
+          password: fakeUser.password.getValue(),
           updatedAt: fakeUser.updatedAt,
           createdAt: fakeUser.createdAt,
         },

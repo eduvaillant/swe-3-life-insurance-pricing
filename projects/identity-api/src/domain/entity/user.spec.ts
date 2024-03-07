@@ -3,13 +3,17 @@ import { faker } from '@faker-js/faker';
 import { User } from './user';
 import { InvalidPasswordError } from '@domain/error';
 
+jest.mock('bcrypt', () => ({
+  hashSync: jest.fn((password: string) => password),
+}));
+
 describe('User', () => {
   it('should create a new user', () => {
     const actualUser = User.create('aUsername', 'aA12345%');
 
     expect(actualUser.id).toBeDefined();
     expect(actualUser.username).toBe('aUsername');
-    expect(actualUser.password).toBe('aA12345%');
+    expect(actualUser.password.getValue()).toBe('aA12345%');
     expect(actualUser.role).toBe('user');
     expect(actualUser.createdAt).toBeDefined();
     expect(actualUser.updatedAt).toBeDefined();

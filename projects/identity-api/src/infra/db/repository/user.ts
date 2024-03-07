@@ -25,7 +25,7 @@ export class PostgresUserRepository
         id: user.id,
         username: user.username,
         role: user.role,
-        password: user.password,
+        password: user.password.getValue(),
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
@@ -72,7 +72,7 @@ export class PostgresUserRepository
       data: {
         username: user.username,
         role: user.role,
-        password: user.password,
+        password: user.password.getValue(),
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
