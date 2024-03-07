@@ -23,13 +23,13 @@ describe('GenerateCoverageQuoteController', () => {
       age: 26,
       occupationCode: '223280',
       capital: 100000,
-      coverages: `${faker.string.uuid()}`,
+      coverages: [faker.string.uuid()],
     };
     const expectedOutput = {
       data: {
         ageFactor: 1.75,
         occupationFactor: 1.02,
-        coverages: [{ coverageId: input.coverages, premium: 249.9 }],
+        coverages: [{ coverageId: input.coverages[0], premium: 249.9 }],
         capital: 100000,
         premium: 249.9,
       },
@@ -53,7 +53,7 @@ describe('GenerateCoverageQuoteController', () => {
       age: 26,
       occupationCode: '223280',
       capital: 100000,
-      coverages: `${faker.string.uuid()}`,
+      coverages: [],
     };
     const expectedError = new Error('generate-error');
     mockedGenerateCoverageQuote.execute.mockRejectedValueOnce(expectedError);

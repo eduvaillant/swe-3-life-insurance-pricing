@@ -1,7 +1,13 @@
-import { IsDefined, IsNumber, IsString, Max, Min } from 'class-validator';
+import {
+  IsDefined,
+  IsNumber,
+  IsString,
+  IsUUID,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class GenerateCoverageQuoteInputDto {
-  @IsDefined()
   @IsNumber()
   @Min(18)
   @Max(60)
@@ -11,15 +17,13 @@ export class GenerateCoverageQuoteInputDto {
   @IsString()
   occupationCode: string;
 
-  @IsDefined()
   @IsNumber()
   @Min(10000)
   @Max(10000000)
   capital: number;
 
-  @IsDefined()
-  @IsString()
-  coverages: string;
+  @IsUUID('4', { each: true })
+  coverages: string[];
 }
 
 export type GenerateCoverageQuoteOutputDto = {

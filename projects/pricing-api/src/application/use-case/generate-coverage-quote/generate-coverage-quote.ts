@@ -57,9 +57,9 @@ export class GenerateCoverageQuote {
     };
   }
 
-  private async getCoverages(coverageIds: string): Promise<Coverage[]> {
+  private async getCoverages(coverageIds: string[]): Promise<Coverage[]> {
     const coverages: Coverage[] = [];
-    for (const coverageId of coverageIds.split(',')) {
+    for (const coverageId of coverageIds) {
       const coverage = await this.coverageRepository.findById(coverageId);
       if (!coverage || !coverage.active) throw new CoverageNotFoundError();
       coverages.push(coverage);
@@ -72,7 +72,7 @@ type Input = {
   age: number;
   occupationCode: string;
   capital: number;
-  coverageIds: string;
+  coverageIds: string[];
 };
 
 type Output = {

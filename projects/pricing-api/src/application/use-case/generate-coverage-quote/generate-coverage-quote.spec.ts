@@ -65,7 +65,7 @@ describe('GenerateCoverageQuote', () => {
       age: 25,
       occupationCode: '22222',
       capital: 100000,
-      coverageIds: fakeCoverage.id,
+      coverageIds: [fakeCoverage.id],
     };
     const expectedOutput = {
       ageFactor: 1.75,
@@ -80,7 +80,7 @@ describe('GenerateCoverageQuote', () => {
     expect(actualOutput).toEqual(expectedOutput);
     expect(mockedCoverageRepository.findById).toHaveBeenCalledTimes(1);
     expect(mockedCoverageRepository.findById).toHaveBeenCalledWith(
-      input.coverageIds,
+      input.coverageIds[0],
     );
     expect(mockedOccupationRepository.findByCode).toHaveBeenCalledTimes(1);
     expect(mockedOccupationRepository.findByCode).toHaveBeenCalledWith(
@@ -114,7 +114,7 @@ describe('GenerateCoverageQuote', () => {
       age: 25,
       occupationCode: '22222',
       capital: 100000,
-      coverageIds: `${fakeCoverage.id},${fakeCoverage2.id}`,
+      coverageIds: [fakeCoverage.id, fakeCoverage2.id],
     };
     const expectedOutput = {
       ageFactor: 1.75,
@@ -150,7 +150,7 @@ describe('GenerateCoverageQuote', () => {
       age: 25,
       occupationCode: '22222',
       capital: 100000,
-      coverageIds: fakeCoverage.id,
+      coverageIds: [fakeCoverage.id],
     };
 
     await expect(generateCoverageQuote.execute(input)).rejects.toThrow(
@@ -171,7 +171,7 @@ describe('GenerateCoverageQuote', () => {
       age: 25,
       occupationCode: '22222',
       capital: 100000,
-      coverageIds: faker.string.uuid(),
+      coverageIds: [faker.string.uuid()],
     };
 
     await expect(generateCoverageQuote.execute(input)).rejects.toThrow(
@@ -199,7 +199,7 @@ describe('GenerateCoverageQuote', () => {
       age: 25,
       occupationCode: '22222',
       capital: 100000,
-      coverageIds: faker.string.uuid(),
+      coverageIds: [faker.string.uuid()],
     };
 
     await expect(generateCoverageQuote.execute(input)).rejects.toThrow(

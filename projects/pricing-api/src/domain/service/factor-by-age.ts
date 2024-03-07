@@ -70,6 +70,6 @@ export class FactorByAge {
 interface TreeNode {
   age: number;
   factor: number;
-  left: TreeNode | null;
-  right: TreeNode | null;
+  left?: TreeNode;
+  right?: TreeNode;
 }
