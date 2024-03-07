@@ -1,6 +1,35 @@
-import { Type } from 'class-transformer';
-import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Validate,
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 
+@ValidatorConstraint({ name: 'AtLeastOneFieldPresent', async: false })
+export class AtLeastOneFieldPresentValidator
+  implements ValidatorConstraintInterface
+{
+  validate(value: any, args: ValidationArguments) {
+    const { object } = args;
+    if (
+      object['name'] !== undefined ||
+      object['description'] !== undefined ||
+      object['capital'] !== undefined ||
+      object['premium'] !== undefined
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  defaultMessage() {
+    return 'At least one of the fields (name, description, capital, premium) must be provided.';
+  }
+}
 export class UpdateCoverageInputDto {
   @IsOptional()
   @IsString()
@@ -17,6 +46,9 @@ export class UpdateCoverageInputDto {
   @IsOptional()
   @IsNumber()
   premium: number;
+
+  @Validate(AtLeastOneFieldPresentValidator)
+  atLeastOneFieldPresent: any;
 }
 
 export class UpdateCoverageParamsInputDto {
@@ -24,24 +56,12 @@ export class UpdateCoverageParamsInputDto {
   coverageId: string;
 }
 
-export class UpdateCoverageDataOutputDto {
-  @IsString()
-  coverageId: string;
-
-  @IsString()
-  name: string;
-
-  @IsString()
-  description: string;
-
-  @IsNumber()
-  capital: number;
-
-  @IsNumber()
-  premium: number;
-}
-
-export class UpdateCoverageOutputDto {
-  @Type(() => UpdateCoverageDataOutputDto)
-  data: UpdateCoverageDataOutputDto;
-}
+export type UpdateCoverageOutputDto = {
+  data: {
+    coverageId: string;
+    name: string;
+    description: string;
+    capital: number;
+    premium: number;
+  };
+};

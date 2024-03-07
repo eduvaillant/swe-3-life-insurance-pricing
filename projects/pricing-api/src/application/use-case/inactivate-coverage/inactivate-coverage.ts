@@ -15,7 +15,10 @@ export class InactivateCoverage {
   ) {}
 
   async execute(input: Input): Promise<void> {
-    const coverage = await this.coverageRepository.findById(input.coverageId);
+    const coverage = await this.coverageRepository.findById(
+      input.coverageId,
+      true,
+    );
     if (!coverage) throw new CoverageNotFoundError();
     coverage.inactivate();
     await this.coverageRepository.update(coverage);

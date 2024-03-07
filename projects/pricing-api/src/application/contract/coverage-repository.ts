@@ -9,7 +9,7 @@ export interface FindCoverageByNameRepository {
 }
 
 export interface FindCoverageByIdRepository {
-  findById(id: string): Promise<Coverage>;
+  findById(id: string, active?: boolean): Promise<Coverage>;
 }
 
 export interface UpdateCoverageRepository {

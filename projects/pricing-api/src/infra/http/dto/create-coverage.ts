@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import { IsDefined, IsNumber, IsString } from 'class-validator';
 
 export class CreateCoverageInputDto {
@@ -19,24 +18,12 @@ export class CreateCoverageInputDto {
   premium: number;
 }
 
-export class CreateCoverageDataOutputDto {
-  @IsString()
-  coverageId: string;
-
-  @IsString()
-  name: string;
-
-  @IsString()
-  description: string;
-
-  @IsNumber()
-  capital: number;
-
-  @IsNumber()
-  premium: number;
-}
-
 export class CreateCoverageOutputDto {
-  @Type(() => CreateCoverageDataOutputDto)
-  data: CreateCoverageDataOutputDto;
+  data: {
+    coverageId: string;
+    name: string;
+    description: string;
+    capital: number;
+    premium: number;
+  };
 }
