@@ -1,30 +1,23 @@
-import { Type } from 'class-transformer';
-import { IsDefined, IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsUUID } from 'class-validator';
 
+enum Role {
+  Admin = 'admin',
+  User = 'user',
+}
 export class ChangeUserRoleParamInputDto {
-  @IsDefined()
   @IsUUID()
   userId: string;
 }
 
 export class ChangeUserRoleInputDto {
-  @IsDefined()
-  @IsString()
+  @IsEnum(Role)
   role: string;
 }
 
-export class ChangeUserRoleDataDto {
-  @IsString()
-  userId: string;
-
-  @IsString()
-  username: string;
-
-  @IsString()
-  role: string;
-}
-
-export class ChangeUserRoleOutputDto {
-  @Type(() => ChangeUserRoleDataDto)
-  data: ChangeUserRoleDataDto;
-}
+export type ChangeUserRoleOutputDto = {
+  data: {
+    userId: string;
+    username: string;
+    role: string;
+  };
+};
