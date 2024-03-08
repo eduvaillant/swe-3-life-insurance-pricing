@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { User } from './user';
 import { InvalidPasswordError } from '@domain/error';
 
-jest.mock('bcrypt', () => ({
+jest.mock('bcryptjs', () => ({
   hashSync: jest.fn((password: string) => password),
 }));
 

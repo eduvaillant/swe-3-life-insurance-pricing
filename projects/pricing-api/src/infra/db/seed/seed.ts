@@ -9,7 +9,6 @@ const filePath = `${process.cwd()}/occupations.csv`;
 
 async function main() {
   await prisma.occupation.deleteMany();
-  console.log(filePath);
   readCSV(filePath)
     .then(async (occupations) => {
       for (const occupation of occupations) {

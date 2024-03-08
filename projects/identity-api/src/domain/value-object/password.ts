@@ -12,7 +12,7 @@ export class Password {
     const regex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#!$%])[A-Za-z\d@#!$%]{8,64}$/;
     if (!regex.test(password)) throw new InvalidPasswordError();
-    const saltRounds = 10;
+    const saltRounds = 8;
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
     return new Password(hashedPassword);
   }
