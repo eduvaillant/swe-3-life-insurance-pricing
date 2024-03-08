@@ -5,7 +5,8 @@ services:
     build: ./projects/identity-api
     env_file: ./projects/identity-api/.env
     depends_on:
-      - identity-db-migrations-and-seeds
+      identity-db-migrations-and-seeds:
+        condition: service_completed_successfully
     ports:
       - "3030:3030"
     deploy:
@@ -44,7 +45,8 @@ services:
     build: ./projects/pricing-api
     env_file: ./projects/pricing-api/.env
     depends_on:
-      - pricing-db-migrations-and-seeds
+      pricing-db-migrations-and-seeds:
+        condition: service_completed_successfully
     deploy:
       replicas: 2
       resources:
