@@ -11,7 +11,7 @@ export class PostgresOccupationRepository
   constructor(private prismaService: PrismaService) {}
 
   async findByCode(code: string, active: boolean = true): Promise<Occupation> {
-    const dbCoverage = await this.prismaService.occupation.findFirst({
+    const dbCoverage = await this.prismaService.occupation.findUnique({
       where: { code, active },
     });
     return (

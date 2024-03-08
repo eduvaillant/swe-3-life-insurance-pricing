@@ -23,7 +23,7 @@ model Coverage {
 
 model Occupation {
   id        String   @id @db.VarChar(36)
-  code      String   @db.Text()
+  code      String   @unique @db.Text()
   name      String   @db.Text()
   active    Boolean  @db.Boolean()
   factor    Float    @db.DoublePrecision()

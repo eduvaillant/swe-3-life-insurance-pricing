@@ -12,7 +12,7 @@ describe('PostgresOccupationRepository', () => {
   beforeAll(() => {
     mockedPrismaService = mock();
     const occupationPrismaMock: MockProxy<
-      Pick<PrismaClient['occupation'], 'findFirst'>
+      Pick<PrismaClient['occupation'], 'findUnique'>
     > = mock();
     mockedPrismaService['occupation'] = occupationPrismaMock;
   });
@@ -37,15 +37,17 @@ describe('PostgresOccupationRepository', () => {
       );
       const code = fakeOccupation.code;
       const expectedInput = { where: { code, active: true } };
-      mockedPrismaService.occupation.findFirst.mockResolvedValue(
+      mockedPrismaService.occupation.findUnique.mockResolvedValue(
         fakeOccupation,
       );
 
       const actualOccupation =
         await postgresOccupationRepository.findByCode(code);
 
-      expect(mockedPrismaService.occupation.findFirst).toHaveBeenCalledTimes(1);
-      expect(mockedPrismaService.occupation.findFirst).toHaveBeenCalledWith(
+      expect(mockedPrismaService.occupation.findUnique).toHaveBeenCalledTimes(
+        1,
+      );
+      expect(mockedPrismaService.occupation.findUnique).toHaveBeenCalledWith(
         expectedInput,
       );
       expect(actualOccupation).toEqual(fakeOccupation);
@@ -53,7 +55,7 @@ describe('PostgresOccupationRepository', () => {
 
     it('should throw if PrismaService throws', async () => {
       const expectedError = new Error('find-error');
-      mockedPrismaService.occupation.findFirst.mockRejectedValueOnce(
+      mockedPrismaService.occupation.findUnique.mockRejectedValueOnce(
         expectedError,
       );
 
