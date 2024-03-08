@@ -1,10 +1,4 @@
 import {
-  InvalidUsernameOrPasswordError,
-  UserAlreadyExistsError,
-  UserNotFoundError,
-} from '@application/error';
-import { InvalidPasswordError, UserAlreadyHasRoleError } from '@domain/error';
-import {
   ExceptionFilter,
   Catch,
   ArgumentsHost,
@@ -15,12 +9,22 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 
+import {
+  CoverageAlreadyExistsError,
+  CoverageNotFoundError,
+  OccupationNotFoundError,
+} from '@application/error';
+import {
+  InvalidAgeError,
+  InvalidCapitalError,
+  InvalidPremiumError,
+} from '@domain/error';
+
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
-    console.log(exception);
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
     let httpStatus: number;
@@ -40,21 +44,21 @@ export class AllExceptionsFilter implements ExceptionFilter {
       message = exception.getResponse()['message'];
       httpStatus = exception.getStatus();
       code = 'FORBIDDEN';
-    } else if (exception instanceof InvalidUsernameOrPasswordError) {
-      message = exception['message'];
-      httpStatus = HttpStatus.UNAUTHORIZED;
-      code = 'UNAUTHORIZED';
-    } else if (exception instanceof UserAlreadyExistsError) {
+    } else if (exception instanceof CoverageAlreadyExistsError) {
       httpStatus = HttpStatus.CONFLICT;
       message = exception['message'];
       code = 'CONFLICT';
-    } else if (exception instanceof UserNotFoundError) {
+    } else if (
+      exception instanceof CoverageNotFoundError ||
+      exception instanceof OccupationNotFoundError
+    ) {
       httpStatus = HttpStatus.NOT_FOUND;
       message = exception['message'];
       code = 'NOT_FOUND';
     } else if (
-      exception instanceof InvalidPasswordError ||
-      exception instanceof UserAlreadyHasRoleError
+      exception instanceof InvalidPremiumError ||
+      exception instanceof InvalidCapitalError ||
+      exception instanceof InvalidAgeError
     ) {
       httpStatus = HttpStatus.BAD_REQUEST;
       message = exception['message'];

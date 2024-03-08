@@ -17,7 +17,7 @@ describe('Password', () => {
       const hashedPassword = Password.create(validPassword);
 
       expect(hashedPassword.getValue()).toEqual(validPassword);
-      expect(bcrypt.hashSync).toHaveBeenCalledWith(validPassword, 10);
+      expect(bcrypt.hashSync).toHaveBeenCalledWith(validPassword, 8);
     });
 
     it('should throw InvalidPasswordError with invalid input', () => {
