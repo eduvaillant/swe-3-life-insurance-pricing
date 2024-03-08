@@ -13,10 +13,23 @@ Ao editar um item que foi deletado [US-6](./us-6-remove-coverage.md), este deve 
 Request Payload
 
 ```json
-???
+{
+    "name"?: <string>,
+    "description"?: <string>,
+    "capital"?: <number>,
+    "premium"?: <number>
+}
 ```
 
-Response Payload - HTTP STATUS 200
+Example:
+
+```json
+{
+  "capital": 15000
+}
+```
+
+Response Payload - HTTP STATUS `200`
 
 ```json
 {
@@ -24,13 +37,27 @@ Response Payload - HTTP STATUS 200
         "coverageId": <string>,
         "name": <string>,
         "description": <string>,
-        "capital": <string>,
-        "premium": <string>
+        "capital": <number>,
+        "premium": <number>
     }
 }
 ```
 
-Error Response - HTTP STATUS 400
+Example:
+
+```json
+{
+  "data": {
+    "coverageId": "d4358c00-9d32-4eb0-a28a-5df07f42622c",
+    "name": "Invalidez",
+    "description": "A coverage description",
+    "capital": 15000,
+    "premium": 20
+  }
+}
+```
+
+Error Response - Payload
 
 ```json
 {
@@ -41,68 +68,70 @@ Error Response - HTTP STATUS 400
 }
 ```
 
-Error Response - HTTP STATUS 401
+Examples:
+
+- Bad Request - HTTP STATUS `400`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "`capital` should be multiple of 10 and grater than or equal 1000"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 403
+- Unauthorized - HTTP STATUS `401`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "UNAUTHORIZED",
+    "message": "Unauthorized"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 404
+- Forbidden - HTTP STATUS `403`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "FORBIDDEN",
+    "message": "Forbidden"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 409
+- Not Found - HTTP STATUS `404`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Coverage not found"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 422
+- Conflict - HTTP STATUS `409`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "CONFLICT",
+    "message": "Coverage already exists"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 500
+- Internal Server Error - HTTP STATUS `500`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "INTERNAL_SERVER_ERROR",
+    "message": "Internal Server Error"
+  }
 }
 ```

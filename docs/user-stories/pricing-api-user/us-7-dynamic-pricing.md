@@ -67,7 +67,7 @@ Invalidez
 <br />
 Nesse caso o valor do prêmio total deve ser 249.9 + 178.5 = `428.4`
 
-**???** `/quote`
+**POST** `/quote`
 
 Request Payload
 
@@ -81,25 +81,126 @@ Request Payload
 }
 ```
 
-Response Payload - HTTP STATUS `???`
+Exemple:
 
 ```json
 {
-  "ageFactor": <number>,
-  "occupationFactor": <number>,
+  "age": 26,
+  "occupationCode": "223280",
+  "capital": 100000,
   "coverages": [
-    {
-      "coverageId": <string>,
-      "premium": <string> // valor calculado
-    },
-  ],
-  "capital": <number>,
-  "premium": <number>
+    "17868aa1-92f3-401a-8d4d-a37cff0c5cf2",
+    "1b8c2f72-8e08-49bc-b937-8edf25e46bac"
+  ]
 }
 ```
 
-Error Response - HTTP STATUS `???` (especificar para cada erro tratado)
+Response Payload - HTTP STATUS `200`
 
 ```json
-???
+{
+    "data": {
+      "ageFactor": <number>,
+      "occupationFactor": <number>,
+      "coverages": [
+        {
+          "coverageId": <string>,
+          "premium": <number> // valor calculado
+        },
+      ],
+      "capital": <number>,
+      "premium": <number>
+    }
+}
+```
+
+Exemple:
+
+```json
+{
+  "data": {
+    "capital": 100000,
+    "occupationFactor": 1.02,
+    "ageFactor": 1.75,
+    "coverages": [
+      {
+        "coverageId": "17868aa1-92f3-401a-8d4d-a37cff0c5cf2",
+        "premium": 249.9
+      },
+      {
+        "coverageId": "1b8c2f72-8e08-49bc-b937-8edf25e46bac",
+        "premium": 178.5
+      }
+    ],
+    "premium": 428.4
+  }
+}
+```
+
+Error Response - Payload
+
+```json
+{
+    "error": {
+        "code": <string>,
+        "message": <string>
+    }
+}
+```
+
+Examples:
+
+- Bad Request - HTTP STATUS `400`
+
+```json
+{
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "capital is required"
+  }
+}
+```
+
+- Unauthorized - HTTP STATUS `401`
+
+```json
+{
+  "error": {
+    "code": "UNAUTHORIZED",
+    "message": "Unauthorized"
+  }
+}
+```
+
+- Forbidden - HTTP STATUS `403`
+
+```json
+{
+  "error": {
+    "code": "FORBIDDEN",
+    "message": "Forbidden"
+  }
+}
+```
+
+- Not Found - HTTP STATUS `404`
+
+```json
+{
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Coverage not found"
+  }
+}
+```
+
+- Internal Server Error - HTTP STATUS `500`
+
+```json
+{
+  "error": {
+    "code": "INTERNAL_SERVER_ERROR",
+    "message": "Internal Server Error"
+  }
+}
 ```

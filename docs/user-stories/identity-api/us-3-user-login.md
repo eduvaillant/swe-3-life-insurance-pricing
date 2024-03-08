@@ -6,7 +6,7 @@ O usuário deve poder efetuar o login no sistema fornecendo o usuário e senha, 
 
 O token deve ser gerando no formato de JWT assinado, utilizando uma chave assimétrica.
 
-Lembre-se de fazer o tratamento correto dos error, como por exemplo (mas não somente):
+Lembre-se de fazer o tratamento correto dos erros, como por exemplo (mas não somente):
 
 - payload inválido
 - senha incorreta
@@ -24,7 +24,7 @@ Request Payload
 }
 ```
 
-Response Payload - HTTP STATUS 200
+Response Payload - HTTP STATUS `200`
 
 ```json
 {
@@ -39,7 +39,22 @@ Response Payload - HTTP STATUS 200
 }
 ```
 
-Error Response - HTTP STATUS 400
+Example:
+
+```json
+{
+  "data": {
+    "user": {
+      "userId": "2396ae3a-9c4c-4c53-9b69-ad6430b473d9",
+      "username": "aUsername",
+      "role": "admin"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+  }
+}
+```
+
+Error Response - Payload
 
 ```json
 {
@@ -50,24 +65,37 @@ Error Response - HTTP STATUS 400
 }
 ```
 
-Error Response - HTTP STATUS 401
+Examples:
+
+- Bad Request - HTTP STATUS `400`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "username is required"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 500
+- Unauthorized - HTTP STATUS `401`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "UNAUTHORIZED",
+    "message": "`username` or `password` are invalid"
+  }
+}
+```
+
+- Internal Server Error - HTTP STATUS `500`
+
+```json
+{
+  "error": {
+    "code": "INTERNAL_SERVER_ERROR",
+    "message": "Internal Server Error"
+  }
 }
 ```

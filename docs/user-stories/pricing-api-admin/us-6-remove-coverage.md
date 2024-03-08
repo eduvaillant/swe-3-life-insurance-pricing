@@ -1,6 +1,6 @@
 # Waner-On Life Insurance Pricing
 
-## US-5 - Eu, como Admin, posso remover uma cobertura, para não permitir mais a precificação com esta cobertura.
+## US-6 - Eu, como Admin, posso remover uma cobertura, para não permitir mais a precificação com esta cobertura.
 
 Para este case, utilize um `soft delete` para remover a cobertura do banco de dados. Lembre-se que os itens deletados não devem poder ser utilizados na precificação.
 
@@ -9,16 +9,16 @@ Para este case, utilize um `soft delete` para remover a cobertura do banco de da
 Request Payload
 
 ```json
-???
+No body
 ```
 
-Response Payload - HTTP STATUS 204
+Response Payload - HTTP STATUS `204`
 
 ```json
 No content
 ```
 
-Error Response - HTTP STATUS 400
+Error Response - Payload
 
 ```json
 {
@@ -29,46 +29,59 @@ Error Response - HTTP STATUS 400
 }
 ```
 
-Error Response - HTTP STATUS 401
+Examples:
+
+- Bad Request - HTTP STATUS `400`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "coverageId is required"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 403
+- Unauthorized - HTTP STATUS `401`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "UNAUTHORIZED",
+    "message": "Unauthorized"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 404
+- Forbidden - HTTP STATUS `403`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "FORBIDDEN",
+    "message": "Forbidden"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 500
+- Not Found - HTTP STATUS `404`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Coverage not found"
+  }
+}
+```
+
+- Internal Server Error - HTTP STATUS `500`
+
+```json
+{
+  "error": {
+    "code": "INTERNAL_SERVER_ERROR",
+    "message": "Internal Server Error"
+  }
 }
 ```

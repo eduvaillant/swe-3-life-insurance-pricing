@@ -16,7 +16,7 @@ services:
 
   identity-db:
     container_name: identity-db
-    image: postgres:latest
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: root
@@ -67,7 +67,7 @@ services:
 
   pricing-db:
     container_name: pricing-db
-    image: postgres:latest
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: root

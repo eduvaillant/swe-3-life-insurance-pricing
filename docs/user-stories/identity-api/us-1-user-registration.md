@@ -1,6 +1,6 @@
 # Waner-On Life Insurance Pricing
 
-## US-1 - Eu, como Admin, posso cadastrar novos usuários `admin`, fornecendo o email e senha
+## US-1 - Eu, como Admin, posso cadastrar novos usuários `admin`, fornecendo o username e senha
 
 O Admin deve poder cadastrar novos usuários no sistema, esses usuários por padrão terão a role `user`.
 
@@ -29,7 +29,16 @@ Request Payload
 }
 ```
 
-Response Payload - HTTP STATUS 201
+Example:
+
+```json
+{
+  "username": "aUsername",
+  "password": "Pass1234@"
+}
+```
+
+Success Response Payload - HTTP STATUS `201`
 
 ```json
 {
@@ -41,7 +50,19 @@ Response Payload - HTTP STATUS 201
 }
 ```
 
-Error Response - HTTP STATUS 400
+Example:
+
+```json
+{
+  "data": {
+    "userId": "2396ae3a-9c4c-4c53-9b69-ad6430b473d9",
+    "username": "aUsername",
+    "role": "user"
+  }
+}
+```
+
+Error Response - Payload
 
 ```json
 {
@@ -52,46 +73,59 @@ Error Response - HTTP STATUS 400
 }
 ```
 
-Error Response - HTTP STATUS 401
+Examples:
+
+- Bad Request - HTTP STATUS `400`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "`password` does not match requirements"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 403
+- Unauthorized - HTTP STATUS `401`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "UNAUTHORIZED",
+    "message": "Unauthorized"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 409
+- Forbidden - HTTP STATUS `403`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "FORBIDDEN",
+    "message": "Forbidden"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 500
+- Conflict - HTTP STATUS `409`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "CONFLICT",
+    "message": "An User with this `username` already exists"
+  }
+}
+```
+
+- Internal Server Error - HTTP STATUS `500`
+
+```json
+{
+  "error": {
+    "code": "INTERNAL_SERVER_ERROR",
+    "message": "Internal Server Error"
+  }
 }
 ```

@@ -14,7 +14,15 @@ Request Payload
 }
 ```
 
-Response Payload - HTTP STATUS 200
+Example:
+
+```json
+{
+  "role": "admin"
+}
+```
+
+Response Payload - HTTP STATUS `200`
 
 ```json
 {
@@ -26,7 +34,19 @@ Response Payload - HTTP STATUS 200
 }
 ```
 
-Error Response - HTTP STATUS 400
+Example:
+
+```json
+{
+  "data": {
+    "userId": "2396ae3a-9c4c-4c53-9b69-ad6430b473d9",
+    "username": "aUsername",
+    "role": "admin"
+  }
+}
+```
+
+Error Response - Payload
 
 ```json
 {
@@ -37,35 +57,59 @@ Error Response - HTTP STATUS 400
 }
 ```
 
-Error Response - HTTP STATUS 401
+Examples:
+
+- Bad Request - HTTP STATUS `400`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "User already has this role"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 403
+- Unauthorized - HTTP STATUS `401`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "UNAUTHORIZED",
+    "message": "Unauthorized"
+  }
 }
 ```
 
-Error Response - HTTP STATUS 500
+- Forbidden - HTTP STATUS `403`
 
 ```json
 {
-    "error": {
-        "code": <string>,
-        "message": <string>
-    }
+  "error": {
+    "code": "FORBIDDEN",
+    "message": "Forbidden"
+  }
+}
+```
+
+- Not Found - HTTP STATUS `404`
+
+```json
+{
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "User not found"
+  }
+}
+```
+
+- Internal Server Error - HTTP STATUS `500`
+
+```json
+{
+  "error": {
+    "code": "INTERNAL_SERVER_ERROR",
+    "message": "Internal Server Error"
+  }
 }
 ```
